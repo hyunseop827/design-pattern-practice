@@ -1,17 +1,16 @@
 package prac1.after;
 
-// 1. Abstract Products (제품군별 인터페이스 분리)
+// AbstractProduct - declares an interface for a type of product object
 interface Button {
     void paint();
-    // void click(); // 버튼만의 기능이 추가될 수 있음
 }
 
+// AbstractProduct
 interface Checkbox {
     void paint();
-    // void check(); // 체크박스만의 기능이 추가될 수 있음
 }
 
-// 2. Concrete Products (Windows Family)
+// ConcreteProduct (Windows Family)
 class WinButton implements Button {
     @Override
     public void paint() {
@@ -19,6 +18,7 @@ class WinButton implements Button {
     }
 }
 
+// ConcreteProduct
 class WinCheckbox implements Checkbox {
     @Override
     public void paint() {
@@ -26,7 +26,7 @@ class WinCheckbox implements Checkbox {
     }
 }
 
-// 2. Concrete Products (Mac Family)
+// ConcreteProduct (Mac Family)
 class MacButton implements Button {
     @Override
     public void paint() {
@@ -34,6 +34,7 @@ class MacButton implements Button {
     }
 }
 
+// ConcreteProduct
 class MacCheckbox implements Checkbox {
     @Override
     public void paint() {
@@ -41,13 +42,13 @@ class MacCheckbox implements Checkbox {
     }
 }
 
-// 3. Abstract Factory (관련된 제품군을 생성하는 인터페이스)
+// AbstractFactory - declares an interface for operations that create abstract product objects
 interface GUIFactory {
-    Button createButton();       // 반환 타입이 Component가 아니라 Button
-    Checkbox createCheckbox();   // 반환 타입이 Component가 아니라 Checkbox
+    Button createButton();
+    Checkbox createCheckbox();
 }
 
-// 4. Concrete Factories
+// ConcreteFactory - implements the operations to create concrete product objects
 class WinFactory implements GUIFactory {
     @Override
     public Button createButton() {
@@ -60,6 +61,7 @@ class WinFactory implements GUIFactory {
     }
 }
 
+// ConcreteFactory
 class MacFactory implements GUIFactory {
     @Override
     public Button createButton() {
@@ -72,13 +74,12 @@ class MacFactory implements GUIFactory {
     }
 }
 
-// 5. Client (팩토리를 사용하는 녀석)
-// Application은 구체적인 OS(Win/Mac)를 몰라도 됩니다.
+// Client - uses only interfaces declared by AbstractFactory and AbstractProduct classes
 class Application {
-    private Button button;
-    private Checkbox checkbox;
+    private final Button button;
+    private final Checkbox checkbox;
 
-    // 생성자를 통해 팩토리를 주입받음 (DI)
+    // Inject factory via constructor (DI)
     public Application(GUIFactory factory) {
         this.button = factory.createButton();
         this.checkbox = factory.createCheckbox();
@@ -92,8 +93,7 @@ class Application {
 
 public class Main {
     public static void main(String[] args) {
-        // 설정에 따라 팩토리가 결정됨 (예: OS 감지)
-        // 여기서는 직접 지정
+        // Factory is determined by configuration (e.g., OS detection)
 
         System.out.println("--- Windows OS ---");
         GUIFactory winFactory = new WinFactory();

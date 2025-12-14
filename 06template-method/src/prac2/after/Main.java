@@ -1,50 +1,53 @@
 package prac2.after;
 
+// AbstractClass - defines abstract primitive operations that concrete subclasses define
 abstract class Connection {
-    // 템플릿 메서드
+    // Template Method - defines the skeleton of an algorithm
     public final void execute(String data) {
         System.out.println("Logging in...");
 
-        // [핵심] Hook 메서드를 통해 '선택적'으로 암호화 수행
+        // Hook method allows optional encryption
         if (isSecure()) {
             System.out.println("Encrypting Data: " + data);
         }
 
-        // 실제 전송은 하위 클래스에게 위임
+        // Delegate actual transmission to subclass
         send(data);
 
         System.out.println("Saving result to DB...");
         System.out.println("Logging out...");
     }
 
-    // [Primitive Operation] 하위 클래스가 반드시 구현해야 함
+    // Primitive Operation - subclasses must implement
     protected abstract void send(String data);
 
-    // [Hook Method] 하위 클래스가 선택적으로 오버라이딩 (기본값: false)
+    // Hook Method - subclasses can optionally override (default: false)
     protected boolean isSecure() {
         return false;
     }
 }
 
+// ConcreteClass - implements the primitive operations to carry out subclass-specific steps
 class TCPConnection extends Connection {
     @Override
     protected void send(String data) {
         System.out.println("Sending via TCP: " + data);
     }
 
-    // TCP는 보안이 필요하므로 Hook을 오버라이딩하여 true 반환
+    // TCP requires security, so override Hook to return true
     @Override
     protected boolean isSecure() {
         return true;
     }
 }
 
+// ConcreteClass
 class UDPConnection extends Connection {
     @Override
     protected void send(String data) {
         System.out.println("Sending via UDP: " + data);
     }
-    // UDP는 보안이 필요 없으므로 Hook을 건드리지 않음 (기본값 false 사용)
+    // UDP doesn't need security, so use default Hook value (false)
 }
 
 public class Main {

@@ -3,10 +3,10 @@ package prac2.before;
 import java.util.ArrayList;
 import java.util.List;
 
-// Receiver
+// Receiver - knows how to perform the operations
 class Stock {
-    private String name;
-    private int quantity;
+    private final String name;
+    private final int quantity;
 
     public Stock(String name, int quantity) {
         this.name = name;
@@ -22,12 +22,12 @@ class Stock {
     }
 }
 
-// Invoker (Bad Design)
+// Invoker (Bad Design - violates OCP)
 class Broker {
-    private List<Stock> buyOrders = new ArrayList<>();
-    private List<Stock> sellOrders = new ArrayList<>();
+    private final List<Stock> buyOrders = new ArrayList<>();
+    private final List<Stock> sellOrders = new ArrayList<>();
 
-    // 문제가 되는 부분 -> OCP!
+    // Problematic part - violates OCP!
     public void takeOrder(String type, Stock stock) {
         if (type.equals("BUY")) {
             buyOrders.add(stock);

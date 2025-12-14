@@ -1,13 +1,13 @@
 package prac2.after;
 
-// Target Interface
+// Target - defines the domain-specific interface that Client uses
 interface Robot {
     void walk(int meters);
 
     void attack();
 }
 
-// Normal Implementation
+// Existing implementation that conforms to Target interface
 class HumanoidRobot implements Robot {
     public void walk(int meters) {
         System.out.println("Humanoid walking " + meters + " meters");
@@ -18,7 +18,7 @@ class HumanoidRobot implements Robot {
     }
 }
 
-// ** Adapter **
+// Adapter - adapts the interface of Adaptee to the Target interface
 class Adapter implements Robot {
 
     private AlienMachine alienMachine;
@@ -39,7 +39,7 @@ class Adapter implements Robot {
     }
 }
 
-// Adaptee (Incompatible Interface)
+// Adaptee - defines an existing interface that needs adapting
 class AlienMachine {
     public void moveLegs(double feet) {
         System.out.println("Alien moving " + feet + " feet");
@@ -50,11 +50,11 @@ class AlienMachine {
     }
 }
 
-// Client
+// Client - collaborates with objects conforming to the Target interface
 class Commander {
     public void order(Robot robot) {
         System.out.println("--- Commander Ordering Robot ---");
-        robot.walk(10); // 10 미터 이동 명령
+        robot.walk(10); // Command to move 10 meters
         robot.attack();
     }
 }
@@ -63,15 +63,13 @@ public class Main {
     public static void main(String[] args) {
         Commander commander = new Commander();
 
-        // 1. 기존 로봇
+        // 1. Existing robot
         HumanoidRobot humanBot = new HumanoidRobot();
         commander.order(humanBot);
 
-        // 2. 외계 로봇 (호환 불가)
+        // 2. Alien robot (incompatible interface) - using Adapter
         AlienMachine alien = new AlienMachine();
-
-        // TODO: 어댑터를 만들어 아래 코드가 동작하게 하세요.
-        Robot adapterRobot =new  Adapter(alien);
+        Robot adapterRobot = new Adapter(alien);
         commander.order(adapterRobot);
     }
 }

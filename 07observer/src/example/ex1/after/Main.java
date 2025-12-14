@@ -1,14 +1,14 @@
 package example.ex1.after;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-// Observer
+// Observer - defines an updating interface for objects that should be notified of changes in a Subject
 interface Observer {
     void update();
 }
 
-// Concrete Observer
+// ConcreteObserver - maintains a reference to a ConcreteSubject and implements the Observer updating interface
 class BatteryLevelDisplay implements Observer {
 
     private final Battery battery;
@@ -24,6 +24,7 @@ class BatteryLevelDisplay implements Observer {
     }
 }
 
+// ConcreteObserver - displays warning when battery is low
 class LowBatteryWarning implements Observer {
 
     private static final int LOW_BATTERY = 30;
@@ -41,24 +42,26 @@ class LowBatteryWarning implements Observer {
     }
 }
 
-// Subject
-abstract class Subject{
-    private List<Observer> observers = new  ArrayList<Observer>();
+// Subject - knows its observers and provides an interface for attaching and detaching Observer objects
+abstract class Subject {
+    private List<Observer> observers = new ArrayList<>();
 
-    public void add(Observer observer){
+    public void add(Observer observer) {
         observers.add(observer);
     }
-    public void remove(Observer observer){
+
+    public void remove(Observer observer) {
         observers.remove(observer);
     }
 
-    public void notifyObservers(){
-        for(Observer observer : observers){
+    public void notifyObservers() {
+        for (Observer observer : observers) {
             observer.update();
         }
     }
 }
 
+// ConcreteSubject - stores state of interest to ConcreteObserver objects and sends notification when state changes
 class Battery extends Subject {
     private int level = 100;
 
@@ -80,7 +83,7 @@ public class Main {
         Observer batteryDisplay = new BatteryLevelDisplay(battery);
         Observer lowBatteryWarning = new LowBatteryWarning(battery);
 
-        // 옵저버 등록
+        // Register observers
         battery.add(batteryDisplay);
         battery.add(lowBatteryWarning);
 

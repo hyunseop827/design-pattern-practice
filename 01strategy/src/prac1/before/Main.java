@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Product {
-    private String name;
-    private double price;
+    private final String name;
+    private final double price;
 
     public Product(String name, double price) {
         this.name = name;
@@ -22,7 +22,7 @@ class Product {
 }
 
 class ShoppingCart {
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {
         products.add(product);
@@ -34,7 +34,7 @@ class ShoppingCart {
             total += product.getPrice();
         }
 
-        // 문제가 되는 부분
+        // Problematic part - violates OCP!
         if (membershipType.equals("REGULAR")) {
             return total;
         } else if (membershipType.equals("STUDENT")) {

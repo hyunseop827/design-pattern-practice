@@ -46,7 +46,7 @@ class Toast {
 
 public class Main {
     public static void main(String[] args) {
-        // 치즈와 햄이 들어간 토스트 주문
+        // Order toast with cheese and ham
         Toast myToast = new Toast(true, true, false);
 
         System.out.println("Menu: " + myToast.getRecipe());

@@ -19,7 +19,7 @@ interface Item {
     void useOn(Enemy enemy);
 }
 
-// 구체 몬스터들
+// Concrete monsters
 
 class Slime implements Enemy {
     private int hp = 20;
@@ -54,7 +54,7 @@ class FireElemental implements Enemy {
     public boolean isDead() { return hp <= 0; }
 }
 
-// 구체 아이템들
+// Concrete items
 
 class HealingPotion implements Item {
     public String name() { return "Healing Potion"; }
@@ -76,7 +76,7 @@ class FireSword implements Item {
     }
 }
 
-// 추상 팩토리 적용 전 게임 스테이지
+// Game stage before applying Abstract Factory pattern
 
 class GameStageBeforeAF {
     private final Theme theme;
@@ -87,7 +87,7 @@ class GameStageBeforeAF {
     }
 
     private Enemy createEnemy() {
-        // 테마에 따라 몬스터를 직접 결정
+        // Directly determine monster based on theme
         if (theme == Theme.FOREST) {
             if (r.nextBoolean()) return new Slime();
             return new Goblin();
@@ -97,7 +97,7 @@ class GameStageBeforeAF {
     }
 
     private Item createItem() {
-        // 테마에 따라 아이템을 직접 결정
+        // Directly determine item based on theme
         if (theme == Theme.FOREST) {
             return new HealingPotion();
         } else {
@@ -120,7 +120,7 @@ class GameStageBeforeAF {
             System.out.println("Hero hits " + enemy.name() + " for " + heroAtk + " (HP " + enemy.hp() + ")");
             if (enemy.isDead()) break;
 
-            // 가끔 아이템 사용
+            // Occasionally use item
             if (r.nextInt(3) == 0) {
                 item.useOn(enemy);
                 if (enemy.isDead()) break;
@@ -135,7 +135,7 @@ class GameStageBeforeAF {
     }
 }
 
-// 실행용 main
+// Main entry point
 
 public class Main {
     public static void main(String[] args) {

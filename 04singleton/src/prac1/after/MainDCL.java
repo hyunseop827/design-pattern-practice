@@ -2,7 +2,7 @@ package prac1.after;
 
 class DatabaseConnectionDCL {
 
-    // [중요] volatile 키워드 필수! (가시성 및 재배치 방지)
+    // Important: volatile keyword is required! (visibility and reordering prevention)
     private volatile static DatabaseConnectionDCL instance;
 
     private DatabaseConnectionDCL() {

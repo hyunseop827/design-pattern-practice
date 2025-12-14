@@ -3,15 +3,15 @@ package prac2.after;
 import java.util.ArrayList;
 import java.util.List;
 
-// Command
+// Command - declares an interface for executing an operation
 interface Command {
     void execute();
 }
 
-// Receiver
+// Receiver - knows how to perform the operations
 class Stock {
-    private String name;
-    private int quantity;
+    private final String name;
+    private final int quantity;
 
     public Stock(String name, int quantity) {
         this.name = name;
@@ -27,9 +27,9 @@ class Stock {
     }
 }
 
-// Concrete Command - Buy
+// ConcreteCommand - binds a Receiver object to an action
 class BuyStock implements Command {
-    private Stock stock; // Receiver를 참조로 가짐
+    private final Stock stock; // Holds reference to Receiver
 
     public BuyStock(Stock stock) {
         this.stock = stock;
@@ -37,13 +37,13 @@ class BuyStock implements Command {
 
     @Override
     public void execute() {
-        stock.buy(); // 가지고 있는 Receiver에게 행동 위임
+        stock.buy(); // Delegates action to Receiver
     }
 }
 
-// Concrete Command - Sell
+// ConcreteCommand
 class SellStock implements Command {
-    private Stock stock;
+    private final Stock stock;
 
     public SellStock(Stock stock) {
         this.stock = stock;
@@ -55,9 +55,9 @@ class SellStock implements Command {
     }
 }
 
-// Invoker
+// Invoker - asks the command to carry out the request
 class Broker {
-    private List<Command> orderList = new ArrayList<>();
+    private final List<Command> orderList = new ArrayList<>();
 
     public void takeOrder(Command order) {
         orderList.add(order);
@@ -67,34 +67,33 @@ class Broker {
         for (Command order : orderList) {
             order.execute();
         }
-        // [중요] 주문 처리가 끝났으면 목록을 비워줍니다.
+        // Clear the order list after processing
         orderList.clear();
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        // 1. Receiver 생성 (주식 종목)
+        // 1. Create Receivers (stock items)
         Stock abcStock = new Stock("ABC", 10);
         Stock googleStock = new Stock("Google", 100);
 
-        // 2. Concrete Command 생성 (주문을 캡슐화)
-        // "ABC 주식을 산다", "구글 주식을 판다"는 행위를 객체로 만듦
+        // 2. Create ConcreteCommands (encapsulate orders)
         BuyStock buyABC = new BuyStock(abcStock);
         SellStock sellABC = new SellStock(abcStock);
         BuyStock buyGoogle = new BuyStock(googleStock);
         SellStock sellGoogle = new SellStock(googleStock);
 
-        // 3. Invoker (중개인)
+        // 3. Create Invoker (broker)
         Broker broker = new Broker();
 
-        // 4. 주문 접수 (실행되지 않고 큐에 쌓임)
+        // 4. Queue orders (not executed yet)
         broker.takeOrder(buyABC);
         broker.takeOrder(sellGoogle);
         broker.takeOrder(buyGoogle);
         broker.takeOrder(sellABC);
 
-        // 5. 일괄 실행
+        // 5. Execute all orders
         System.out.println("--- Executing Orders ---");
         broker.placeOrders();
     }

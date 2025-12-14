@@ -12,11 +12,11 @@ class FileDataSource {
     public void writeData(String data) {
         String processedData = data;
 
-        // 암호화 처리
+        // Encryption
         if (encrypt) {
             processedData = "Encrypted(" + processedData + ")";
         }
-        // 압축 처리
+        // Compression
         if (compress) {
             processedData = "Compressed(" + processedData + ")";
         }
@@ -27,11 +27,11 @@ class FileDataSource {
     public String readData(String data) {
         String processedData = data;
 
-        // 압축 해제
+        // Decompression
         if (compress) {
             processedData = processedData.replace("Compressed(", "").replace(")", "");
         }
-        // 복호화
+        // Decryption
         if (encrypt) {
             processedData = processedData.replace("Encrypted(", "").replace(")", "");
         }
@@ -42,15 +42,15 @@ class FileDataSource {
 
 public class Main {
     public static void main(String[] args) {
-        // 암호화 + 압축 적용
+        // Apply encryption + compression
         FileDataSource source = new FileDataSource(true, true);
 
         String data = "Hello World";
 
         source.writeData(data);
-        // 출력 예상: Writing to file: Compressed(Encrypted(Hello World))
+        // Expected output: Writing to file: Compressed(Encrypted(Hello World))
 
         System.out.println("Reading: " + source.readData("Compressed(Encrypted(Hello World))"));
-        // 출력 예상: Reading: Hello World
+        // Expected output: Reading: Hello World
     }
 }

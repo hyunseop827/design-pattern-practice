@@ -30,7 +30,7 @@ class Directory {
         this.name = name;
     }
 
-    // 문제가 되는 부분
+    // Problematic part - different methods for files and directories
     public void addFile(File file) {
         files.add(file);
     }

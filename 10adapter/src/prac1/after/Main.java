@@ -1,11 +1,11 @@
 package prac1.after;
 
-// Target Interface (Standard)
+// Target - defines the domain-specific interface that Client uses
 interface Logger {
     void log(String message);
 }
 
-// Adapter
+// Adapter - adapts the interface of Adaptee to the Target interface
 class Adapter implements Logger {
     private final FancyLogLibrary fancyLogLibrary;
 
@@ -20,7 +20,7 @@ class Adapter implements Logger {
     }
 }
 
-// Adaptee (3rd Party Library) - 수정 불가
+// Adaptee (3rd Party Library) - cannot be modified
 class FancyLogLibrary {
     public void mark(String msg) {
         System.out.println("[Fancy MARK] *** " + msg + " ***");
@@ -31,9 +31,9 @@ class FancyLogLibrary {
     }
 }
 
-// Client
+// Client - collaborates with objects conforming to the Target interface
 class Application {
-    private Logger logger;
+    private final Logger logger;
 
     public Application(Logger logger) {
         this.logger = logger;
@@ -47,22 +47,15 @@ class Application {
 
 public class Main {
     public static void main(String[] args) {
-        // 1. 기존 방식 (익명 클래스로 간단 구현 예시)
-        Logger standardLogger = new Logger() {
-            @Override
-            public void log(String message) {
-                System.out.println("Standard: " + message);
-            }
-        };
+        // 1. Standard approach (simple lambda implementation)
+        Logger standardLogger = message -> System.out.println("Standard: " + message);
 
         Application app1 = new Application(standardLogger);
         System.out.println("--- Standard Logger ---");
         app1.runProcess();
 
-        // 2. FancyLogLibrary를 사용하고 싶음
+        // 2. Using FancyLogLibrary via Adapter
         FancyLogLibrary fancyLib = new FancyLogLibrary();
-
-        // TODO: Adapter를 사용하여 fancyLib를 Application에서 사용할 수 있게 만드세요.
         Logger adapter = new Adapter(fancyLib);
 
         System.out.println("\n--- Fancy Logger (via Adapter) ---");

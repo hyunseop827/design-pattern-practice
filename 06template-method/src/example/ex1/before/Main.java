@@ -5,7 +5,7 @@ import java.util.List;
 
 class SimpleReportGenerator {
     public String generate(List<Customer> customers) {
-        String report = String.format("고객 수: %d명\n", customers.size());
+        String report = String.format("Customer count: %d\n", customers.size());
         for (Customer customer : customers) {
             report += String.format("%s : %d\n", customer.getName(), customer.getPoint());
         }
@@ -43,11 +43,11 @@ public class Main {
     public static void main(String[] args) {
         List<Customer> customers = new ArrayList<>();
 
-        customers.add(new Customer("홍길동", 150));
-        customers.add(new Customer("우수한", 350));
-        customers.add(new Customer("부족한", 50));
-        customers.add(new Customer("훌륭한", 450));
-        customers.add(new Customer("최고의", 550));
+        customers.add(new Customer("Alice", 150));
+        customers.add(new Customer("Bob", 350));
+        customers.add(new Customer("Charlie", 50));
+        customers.add(new Customer("Diana", 450));
+        customers.add(new Customer("Eve", 550));
 
         SimpleReportGenerator simpleReportGenerator = new SimpleReportGenerator();
         System.out.println(simpleReportGenerator.generate(customers));

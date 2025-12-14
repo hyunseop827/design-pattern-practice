@@ -1,18 +1,18 @@
 package prac1.after;
 
-// PULL 방식 적용
+// Pull-based Observer Pattern
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Observer
+// Observer - defines an updating interface for objects that should be notified of changes in a Subject
 interface Observer {
     void update();
 }
 
-// Concrete Observer
+// ConcreteObserver - maintains a reference to a ConcreteSubject and implements the Observer updating interface
 class CurrentConditionsDisplay implements Observer {
-    private WeatherData weatherData;
+    private final WeatherData weatherData;
 
     public CurrentConditionsDisplay(WeatherData weatherData) {
         this.weatherData = weatherData;
@@ -23,12 +23,13 @@ class CurrentConditionsDisplay implements Observer {
         System.out.println("Current conditions: " +
                 weatherData.getTemperature() +
                 "F degrees and " +
-                weatherData.getHumidity()+ "% humidity");
+                weatherData.getHumidity() + "% humidity");
     }
 }
 
+// ConcreteObserver
 class StatisticsDisplay implements Observer {
-    private WeatherData weatherData;
+    private final WeatherData weatherData;
 
     public StatisticsDisplay(WeatherData weatherData) {
         this.weatherData = weatherData;
@@ -41,6 +42,7 @@ class StatisticsDisplay implements Observer {
     }
 }
 
+// ConcreteObserver
 class ForecastDisplay implements Observer {
 
     @Override
@@ -49,9 +51,9 @@ class ForecastDisplay implements Observer {
     }
 }
 
-// Subject
+// Subject - knows its observers and provides an interface for attaching Observer objects
 abstract class SubjectData {
-    private final List<Observer> observers = new ArrayList<Observer>();
+    private final List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -68,8 +70,7 @@ abstract class SubjectData {
     }
 }
 
-
-// Concrete Subject
+// ConcreteSubject - stores state of interest to ConcreteObserver objects
 class WeatherData extends SubjectData {
     private float temperature;
     private float humidity;
@@ -94,6 +95,7 @@ class WeatherData extends SubjectData {
         return pressure;
     }
 }
+
 public class Main {
     public static void main(String[] args) {
         WeatherData weatherData = new WeatherData();

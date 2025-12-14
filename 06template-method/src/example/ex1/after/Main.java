@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-// Abstract Class
+// AbstractClass - defines abstract primitive operations that concrete subclasses define
 abstract class ReportGenerator {
 
-    // Template Method: 알고리즘의 뼈대를 확정 (final로 막는 것을 권장)
+    // Template Method - defines the skeleton of an algorithm (final is recommended)
     public final String generate(List<Customer> customers) {
-        // 1. 필터링 (Hook 메서드 사용)
+        // 1. Filtering (using Hook method)
         List<Customer> selectedCustomers = new ArrayList<>();
         for (Customer customer : customers) {
             if (customerFilter(customer)) {
@@ -17,10 +17,10 @@ abstract class ReportGenerator {
             }
         }
 
-        // 2. 정렬
+        // 2. Sorting
         selectedCustomers.sort(Comparator.comparingInt(Customer::getPoint));
 
-        // 3. 보고서 생성 (String concatenation 대신 StringBuilder 사용 권장)
+        // 3. Report generation (StringBuilder recommended over String concatenation)
         StringBuilder report = new StringBuilder();
 
         report.append(createHeader(selectedCustomers));
@@ -34,39 +34,39 @@ abstract class ReportGenerator {
         return report.toString();
     }
 
-    // Abstract Methods
+    // Primitive Operations - subclasses must implement
     protected abstract String createHeader(List<Customer> customers);
     protected abstract String createFooter(List<Customer> customers);
 
-    // Hook Method: 기본값은 true (모두 통과), 필요하면 오버라이딩
+    // Hook Method - default is true (all pass), override if needed
     protected boolean customerFilter(Customer customer) {
         return true;
     }
 }
 
-// Concrete Class 1: 단순 보고서
+// ConcreteClass - simple report
 class SimpleReportGenerator extends ReportGenerator {
 
     @Override
     protected String createHeader(List<Customer> customers) {
-        return String.format("고객 수: %d명입니다.\n", customers.size());
+        return String.format("Customer count: %d\n", customers.size());
     }
 
     @Override
     protected String createFooter(List<Customer> customers) {
         int total = customers.stream().mapToInt(Customer::getPoint).sum();
-        return String.format("점수 합계 : %d\n", total);
+        return String.format("Total points: %d\n", total);
     }
 
-    // customerFilter를 오버라이딩 하지 않으므로 기본값(true) 사용 -> 모든 고객 출력
+    // Does not override customerFilter, so default (true) is used -> all customers printed
 }
 
-// Concrete Class 2: 고급 보고서
+// ConcreteClass - advanced report
 class AdvancedReportGenerator extends ReportGenerator {
 
     @Override
     protected boolean customerFilter(Customer customer) {
-        // 300점 이상만 통과하도록 Hook 재정의
+        // Override Hook to pass only customers with 300+ points
         return customer.getPoint() >= 300;
     }
 
@@ -74,7 +74,7 @@ class AdvancedReportGenerator extends ReportGenerator {
     protected String createHeader(List<Customer> customers) {
         return String.format(
                 "********************************************\n" +
-                        "           해당 고객 수 :  %d명입니다.         \n" +
+                        "           Customer count: %d              \n" +
                         "********************************************\n",
                 customers.size());
     }
@@ -84,13 +84,12 @@ class AdvancedReportGenerator extends ReportGenerator {
         int total = customers.stream().mapToInt(Customer::getPoint).sum();
         return String.format(
                 "********************************************\n" +
-                        "          점수 합계 : %d         \n" +
+                        "          Total points: %d                 \n" +
                         "********************************************\n",
                 total);
     }
 }
 
-// Customer 클래스와 Main은 그대로 유지...
 class Customer {
     private String name;
     private int point;
@@ -121,11 +120,11 @@ public class Main {
     public static void main(String[] args) {
         List<Customer> customers = new ArrayList<>();
 
-        customers.add(new Customer("홍길동", 150));
-        customers.add(new Customer("우수한", 350));
-        customers.add(new Customer("부족한", 50));
-        customers.add(new Customer("훌륭한", 450));
-        customers.add(new Customer("최고의", 550));
+        customers.add(new Customer("Alice", 150));
+        customers.add(new Customer("Bob", 350));
+        customers.add(new Customer("Charlie", 50));
+        customers.add(new Customer("Diana", 450));
+        customers.add(new Customer("Eve", 550));
 
         SimpleReportGenerator simpleReportGenerator = new SimpleReportGenerator();
         System.out.println(simpleReportGenerator.generate(customers));

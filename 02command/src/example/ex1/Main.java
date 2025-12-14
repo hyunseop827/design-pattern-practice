@@ -1,21 +1,25 @@
 package example.ex1;
 
+// Command - declares an interface for executing an operation
 interface Command {
     void execute();
 }
 
+// Receiver - knows how to perform the operations
 class Bird {
     public void sing() {
         System.out.println("Bird is singing");
     }
 }
 
+// Receiver
 class FileNew {
     public void open() {
         System.out.println("File open");
     }
 }
 
+// ConcreteCommand - binds a Receiver object to an action
 class BirdSingCmd implements Command {
     private final Bird bird;
 
@@ -29,6 +33,7 @@ class BirdSingCmd implements Command {
     }
 }
 
+// ConcreteCommand
 class FileNewCmd implements Command {
     private final FileNew f;
 
@@ -43,12 +48,14 @@ class FileNewCmd implements Command {
 }
 
 
+// Receiver
 class Tv {
     public void power() {
         System.out.println("Tv Power On");
     }
 }
 
+// ConcreteCommand
 class TvPwrCmd implements Command {
     private final Tv tv;
 
@@ -62,14 +69,8 @@ class TvPwrCmd implements Command {
     }
 }
 
+// Invoker - asks the command to carry out the request
 class MenuItem {
-    // 기존의 잘못된 예시
-//    public void buttonPressed(Object o) {
-//        if (o instanceof Bird) ((Bird)o).sing();
-//        else if (o instanceof Tv) ((Tv)o).power();
-//        else if (o instanceof FileNew) ((FileNew)o).open();
-//    }
-
     public void buttonPressed(Command cmd) {
         cmd.execute();
     }

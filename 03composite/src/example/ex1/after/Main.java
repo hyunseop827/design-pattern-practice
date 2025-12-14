@@ -3,11 +3,10 @@ package example.ex1.after_refined;
 import java.util.ArrayList;
 import java.util.List;
 
-// Component
+// Component - declares the interface for objects in the composition
 abstract class FileSystem {
-    private String name; // 1. private으로 캡슐화
+    private String name;
 
-    // 2. 부모 생성자에서 초기화
     public FileSystem(String name) {
         this.name = name;
     }
@@ -16,16 +15,15 @@ abstract class FileSystem {
 
     public abstract int getSize();
 
-    // 3. 깊이(indent)를 표현하기 위한 오버로딩 메서드 추가
     public abstract void print(String indent);
 }
 
-// Leaf
+// Leaf - represents leaf objects in the composition (has no children)
 class File extends FileSystem {
     private int size;
 
     public File(String name, int size) {
-        super(name); // 부모 생성자 호출
+        super(name);
         this.size = size;
     }
 
@@ -40,12 +38,12 @@ class File extends FileSystem {
     }
 }
 
-// Composite
+// Composite - defines behavior for components having children
 class Directory extends FileSystem {
     private List<FileSystem> entries = new ArrayList<>();
 
     public Directory(String name) {
-        super(name); // 부모 생성자 호출
+        super(name);
     }
 
     public void addEntry(FileSystem entry) {
@@ -68,7 +66,6 @@ class Directory extends FileSystem {
     @Override
     public void print(String indent) {
         System.out.println(indent + "[Directory] " + getName() + ", Size: " + getSize());
-        // 자식 요소들은 현재 들여쓰기에 공백을 더해서 출력
         for (FileSystem entry : entries) {
             entry.print(indent + "   ");
         }
@@ -91,7 +88,7 @@ public class Main {
         dir2.addEntry(f3);
         dir1.addEntry(f4);
 
-        // 출력 시작 (초기 들여쓰기는 없음)
+        // Client treats Composite and Leaf uniformly
         dir1.print("");
     }
 }

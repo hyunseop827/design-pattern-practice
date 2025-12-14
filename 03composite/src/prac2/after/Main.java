@@ -3,7 +3,7 @@ package prac2.after;
 import java.util.ArrayList;
 import java.util.List;
 
-// Component (이름 변경: Items -> MenuComponent)
+// Component - declares the interface for objects in the composition
 abstract class MenuComponent {
     protected String name;
 
@@ -15,9 +15,9 @@ abstract class MenuComponent {
     public abstract void print();
 }
 
-// Leaf
+// Leaf - represents leaf objects in the composition (has no children)
 class MenuItem extends MenuComponent {
-    private double price;
+    private final double price;
 
     public MenuItem(String name, double price) {
         super(name);
@@ -35,16 +35,16 @@ class MenuItem extends MenuComponent {
     }
 }
 
-// Composite
+// Composite - defines behavior for components having children
 class Menu extends MenuComponent {
-    // 자식들을 담는 통합 리스트
-    private List<MenuComponent> menuComponents = new ArrayList<>();
+    // Unified list for children
+    private final List<MenuComponent> menuComponents = new ArrayList<>();
 
     public Menu(String name) {
         super(name);
     }
 
-    // 메서드 통합 (addMenuItem + addSubMenu)
+    // Unified method (addMenuItem + addSubMenu)
     public void add(MenuComponent menuComponent) {
         menuComponents.add(menuComponent);
     }
@@ -52,8 +52,8 @@ class Menu extends MenuComponent {
     @Override
     public double getPrice() {
         double total = 0;
-        // 재귀적으로 가격 합산
-        for(MenuComponent component : menuComponents) {
+        // Recursively sum prices
+        for (MenuComponent component : menuComponents) {
             total += component.getPrice();
         }
         return total;
@@ -61,12 +61,12 @@ class Menu extends MenuComponent {
 
     @Override
     public void print() {
-        // [중요] 자기 자신(메뉴 이름) 출력
+        // Print self (menu name)
         System.out.println("\nMenu: " + name);
         System.out.println("---------------------");
 
-        // 재귀적으로 출력 위임
-        for(MenuComponent component : menuComponents) {
+        // Recursively delegate printing
+        for (MenuComponent component : menuComponents) {
             component.print();
         }
     }
@@ -83,17 +83,17 @@ public class Main {
         MenuItem cake = new MenuItem("Cake", 5.0);
         MenuItem iceCream = new MenuItem("Ice Cream", 3.0);
 
-        // 트리 구조 조립
+        // Build tree structure
         mainMenu.add(burger);
         mainMenu.add(pizza);
 
-        dinnerMenu.add(dessertMenu); // 메뉴 안에 메뉴 넣기
-        dessertMenu.add(cake);       // 메뉴 안에 아이템 넣기
+        dinnerMenu.add(dessertMenu); // Menu inside menu
+        dessertMenu.add(cake);       // Item inside menu
         dessertMenu.add(iceCream);
 
         mainMenu.add(dinnerMenu);
 
-        // 전체 출력
+        // Print entire structure
         mainMenu.print();
         System.out.println("\nTotal Price: $" + mainMenu.getPrice());
     }

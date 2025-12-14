@@ -1,11 +1,11 @@
 package example.ex2.after;
 
-// 1. Command 인터페이스 (유지)
+// Command - declares an interface for executing an operation
 interface Command {
     void execute();
 }
 
-// 2. Receiver (TV) - 변경 없음
+// Receiver - knows how to perform the operations
 class TV {
     private boolean powerOn = false;
     private boolean muteOn = false;
@@ -22,7 +22,7 @@ class TV {
     }
 }
 
-// 3. ConcreteCommand (중복 제거: On/Off 합침)
+// ConcreteCommand - binds a Receiver object to an action (On/Off combined as toggle)
 class TvPowerCommand implements Command {
     private final TV tv;
     public TvPowerCommand(TV tv) { this.tv = tv; }
@@ -31,6 +31,7 @@ class TvPowerCommand implements Command {
     public void execute() { tv.power(); }
 }
 
+// ConcreteCommand
 class TvMuteCommand implements Command {
     private final TV tv;
     public TvMuteCommand(TV tv) { this.tv = tv; }
@@ -39,18 +40,18 @@ class TvMuteCommand implements Command {
     public void execute() { tv.mute(); }
 }
 
-// 4. Invoker (TwoButton의 의미를 살림)
+// Invoker - asks the command to carry out the request
 class TwoButtonController {
     private Command button1Command;
     private Command button2Command;
 
-    // 생성자에서 버튼 2개의 기능을 각각 설정
+    // Set button functions via constructor
     public TwoButtonController(Command button1Command, Command button2Command) {
         this.button1Command = button1Command;
         this.button2Command = button2Command;
     }
 
-    // 필요하다면 나중에 버튼 기능을 바꿀 수 있는 메서드 추가 가능
+    // Methods to change button functions later if needed
     public void setButton1Command(Command command) { this.button1Command = command; }
     public void setButton2Command(Command command) { this.button2Command = command; }
 
@@ -63,16 +64,16 @@ class TwoButtonController {
     }
 }
 
-// 5. Client
+// Client - creates ConcreteCommand objects and sets their receivers
 public class Main {
     public static void main(String[] args) {
         TV tv = new TV();
 
-        // 커맨드 객체 생성 (On/Off 구분 없이 동작 자체가 토글이므로 하나만 있으면 됨)
+        // Create command objects (toggle behavior, so single command per action)
         Command powerCmd = new TvPowerCommand(tv);
         Command muteCmd = new TvMuteCommand(tv);
 
-        // 버튼1: 전원, 버튼2: 음소거로 매핑
+        // Map button1: power, button2: mute
         TwoButtonController rc = new TwoButtonController(powerCmd, muteCmd);
 
         rc.button1Pressed(); // Power On

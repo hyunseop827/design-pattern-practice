@@ -1,11 +1,11 @@
 package example.ex1;
 
-// 임금 계산 전략 인터페이스
+// Strategy - defines the interface for salary calculation algorithms
 interface SalaryCalculator {
     double calculateSalary(double hourlyWage, double totalHours);
 }
 
-// 기본 임금 계산 전략 (기본 근무 시간 8시간, 초과 근무는 1.5배)
+// ConcreteStrategy - regular salary calculation (8 standard hours, 1.5x overtime)
 class RegularSalaryCalculator implements SalaryCalculator {
     private static final int STANDARD_HOURS = 8;
 
@@ -21,7 +21,7 @@ class RegularSalaryCalculator implements SalaryCalculator {
     }
 }
 
-// 특별 임금 계산 전략 (예: 초과근무 2배)
+// ConcreteStrategy - special salary calculation (2x overtime pay)
 class SpecialSalaryCalculator implements SalaryCalculator {
     private static final int STANDARD_HOURS = 8;
 
@@ -31,18 +31,18 @@ class SpecialSalaryCalculator implements SalaryCalculator {
         double overtimeHours = Math.max(0, totalHours - STANDARD_HOURS);
 
         double regularPay = regularHours * hourlyWage;
-        double overtimePay = overtimeHours * hourlyWage * 2.0; // 더 세게 쳐주는 버전
+        double overtimePay = overtimeHours * hourlyWage * 2.0;
 
         return regularPay + overtimePay;
     }
 }
 
-// 컨텍스트: Employee가 전략을 “가지고” 있고, 그걸로 급여를 계산함
+// Context - maintains a reference to a Strategy object and delegates salary calculation
 class Employee {
     private final String name;
     private final double hourlyWage;
     private final double totalHours;
-    private final SalaryCalculator salaryCalculator; // 전략 객체
+    private final SalaryCalculator salaryCalculator;
 
     public Employee(String name,
                     double hourlyWage,
@@ -63,20 +63,19 @@ class Employee {
     }
 }
 
-// 클라이언트 코드
+// Client
 public class Main {
     public static void main(String[] args) {
-        // 기본 전략 사용
+        // Using RegularSalaryCalculator strategy
         Employee emp1 =
                 new Employee("John Doe", 20.0, 10, new RegularSalaryCalculator());
         double salary1 = emp1.calculateSalary();
-        System.out.println(emp1.getName() + "의 주급은: $" + salary1);
+        System.out.println(emp1.getName() + "'s weekly salary: $" + salary1);
 
-        // 특별 전략으로 갈아끼움
+        // Swapping to SpecialSalaryCalculator strategy
         Employee emp2 =
                 new Employee("Jane Smith", 20.0, 10, new SpecialSalaryCalculator());
         double salary2 = emp2.calculateSalary();
-        System.out.println(emp2.getName() + "의 주급은: $" + salary2);
+        System.out.println(emp2.getName() + "'s weekly salary: $" + salary2);
     }
 }
-

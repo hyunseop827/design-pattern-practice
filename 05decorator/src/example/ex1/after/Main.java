@@ -2,12 +2,12 @@ package example.ex1.after;
 
 import java.util.Scanner;
 
-// Component
+// Component - defines the interface for objects that can have responsibilities added dynamically
 interface Text {
     String render();
 }
 
-// Concrete Component
+// ConcreteComponent - defines an object to which additional responsibilities can be attached
 class PlainText implements Text {
 
     private final String text;
@@ -22,7 +22,7 @@ class PlainText implements Text {
     }
 }
 
-// Decorator
+// Decorator - maintains a reference to a Component object and defines an interface that conforms to Component's interface
 abstract class Decorator implements Text {
     private final Text texts;
 
@@ -36,7 +36,7 @@ abstract class Decorator implements Text {
     }
 }
 
-// Concrete Decorator
+// ConcreteDecorator - adds responsibilities to the component
 class SurroundDecorator extends Decorator {
     private final String first;
     private final String second;
@@ -52,6 +52,7 @@ class SurroundDecorator extends Decorator {
     }
 }
 
+// ConcreteDecorator - adds padding characters on both sides
 class RepeatPadDecorator extends Decorator {
     private final char pad;
     private final int repeat;
@@ -69,10 +70,11 @@ class RepeatPadDecorator extends Decorator {
     }
 }
 
+// Client
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("문자열 입력: ");
+        System.out.print("Enter text: ");
         String input = sc.nextLine();
 
         Text base = new PlainText(input);

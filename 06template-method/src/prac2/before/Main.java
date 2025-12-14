@@ -4,7 +4,7 @@ class TCPConnection {
     public void execute(String data) {
         System.out.println("Logging in...");
 
-        // TCP는 보안이 필요해서 암호화 과정을 거침
+        // TCP requires security, so encryption is performed
         System.out.println("Encrypting Data: " + data);
 
         System.out.println("Sending via TCP: " + data);
@@ -17,7 +17,7 @@ class UDPConnection {
     public void execute(String data) {
         System.out.println("Logging in...");
 
-        // UDP는 암호화 과정 없음 (바로 전송)
+        // UDP has no encryption (direct transmission)
 
         System.out.println("Sending via UDP: " + data);
         System.out.println("Saving result to DB...");

@@ -29,13 +29,13 @@ class ReportService {
     public void makeReport(String type, String content) {
         if (type.equals("PDF")) {
             PdfReport pdf = new PdfReport();
-            // PDF 생성 흐름
+            // PDF generation flow
             pdf.header();
             pdf.body(content);
             pdf.footer();
         } else if (type.equals("EXCEL")) {
             ExcelReport excel = new ExcelReport();
-            // 엑셀 생성 흐름
+            // Excel generation flow
             excel.header();
             excel.body(content);
             excel.footer();

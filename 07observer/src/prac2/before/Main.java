@@ -3,17 +3,17 @@ package prac2.before;
 import java.util.ArrayList;
 import java.util.List;
 
-// 1. 이벤트 타입 정의
+// 1. Event type definition
 enum EventType {
     MONSTER_KILLED,
     ITEM_PICKED,
     LEVEL_UP
 }
 
-// 2. 이벤트 데이터 캡슐화 (State)
+// 2. Event data encapsulation (State)
 class GameEvent {
-    private EventType type;
-    private String data; // 몬스터 이름, 아이템 이름 등
+    private final EventType type;
+    private final String data; // Monster name, item name, etc.
 
     public GameEvent(EventType type, String data) {
         this.type = type;
@@ -24,14 +24,14 @@ class GameEvent {
     public String getData() { return data; }
 }
 
-// 3. Observer 인터페이스 (Pull 방식이므로 인자 없음)
+// 3. Observer interface (Pull-based, no arguments)
 interface Observer {
     void update();
 }
 
-// 4. Subject (공통 기능)
+// 4. Subject - knows its observers and provides an interface for attaching Observer objects
 abstract class Subject {
-    private List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -44,10 +44,10 @@ abstract class Subject {
     }
 }
 
-// 5. Concrete Subject (Player)
+// 5. ConcreteSubject (Player)
 class Player extends Subject {
     private int level = 1;
-    // [핵심] 가장 최근에 발생한 이벤트를 상태로 저장
+    // Key: Store the most recent event as state
     private GameEvent latestEvent;
 
     public GameEvent getLatestEvent() {
@@ -59,10 +59,10 @@ class Player extends Subject {
     }
 
     public void killMonster(String name) {
-        // 상태 갱신
+        // Update state
         this.latestEvent = new GameEvent(EventType.MONSTER_KILLED, name);
         System.out.println("Action: Killed " + name);
-        // 알림 전송 (데이터 없이 신호만 보냄)
+        // Send notification (signal only, no data)
         notifyObservers();
     }
 
@@ -80,10 +80,11 @@ class Player extends Subject {
     }
 }
 
-// --- 아래 Observer 클래스들을 Pull 방식으로 완성해 보세요 ---
+// --- Complete the Observer classes below using Pull-based approach ---
 
+// ConcreteObserver
 class AchievementSystem implements Observer {
-    private Player player; // Pull을 위해 Subject를 알고 있어야 함
+    private final Player player; // Must know Subject for Pull
 
     public AchievementSystem(Player player) {
         this.player = player;
@@ -91,13 +92,14 @@ class AchievementSystem implements Observer {
 
     @Override
     public void update() {
-        // 빈칸: player에게서 이벤트를 가져와(Pull) "Dragon"을 잡았는지 확인
+        // TODO: Pull event from player and check if "Dragon" was killed
 
     }
 }
 
+// ConcreteObserver
 class QuestSystem implements Observer {
-    private Player player;
+    private final Player player;
 
     public QuestSystem(Player player) {
         this.player = player;
@@ -105,13 +107,14 @@ class QuestSystem implements Observer {
 
     @Override
     public void update() {
-        // 빈칸: 이벤트를 가져와서 몬스터 처치나 아이템 획득 로그 출력
+        // TODO: Pull event and log monster kills or item pickups
 
     }
 }
 
+// ConcreteObserver
 class UISystem implements Observer {
-    private Player player;
+    private final Player player;
 
     public UISystem(Player player) {
         this.player = player;
@@ -119,7 +122,7 @@ class UISystem implements Observer {
 
     @Override
     public void update() {
-        // 빈칸: 레벨업 이벤트일 때만 UI 갱신 로그 출력
+        // TODO: Only update UI log on level up events
 
     }
 }
@@ -128,12 +131,12 @@ public class Main {
     public static void main(String[] args) {
         Player player = new Player();
 
-        // 구독 설정
+        // Register observers
         player.addObserver(new AchievementSystem(player));
         player.addObserver(new QuestSystem(player));
         player.addObserver(new UISystem(player));
 
-        // 게임 진행
+        // Game progression
         player.killMonster("Orc");
         player.killMonster("Dragon");
         player.pickItem("Gold Coin");

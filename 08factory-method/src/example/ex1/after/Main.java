@@ -2,7 +2,7 @@ package example.ex1.after;
 
 import java.util.Random;
 
-// Product
+// Product - defines the interface of objects the factory method creates
 interface Enemy {
     String name();
 
@@ -15,7 +15,7 @@ interface Enemy {
     boolean isDead();
 }
 
-// Concrete Product
+// ConcreteProduct - implements the Product interface
 class Slime implements Enemy {
     private final Random r = new Random();
     private int hp = 20;
@@ -41,6 +41,7 @@ class Slime implements Enemy {
     }
 }
 
+// ConcreteProduct
 class Goblin implements Enemy {
     private final Random r = new Random();
     private int hp = 35;
@@ -66,6 +67,7 @@ class Goblin implements Enemy {
     }
 }
 
+// ConcreteProduct
 class Orc implements Enemy {
     private final Random r = new Random();
     private int hp = 60;
@@ -91,7 +93,7 @@ class Orc implements Enemy {
     }
 }
 
-// Creator
+// Creator - declares the factory method which returns an object of type Product
 abstract class GameStage {
     private final String mode;
     protected final Random r = new Random();
@@ -118,6 +120,7 @@ abstract class GameStage {
     protected abstract Enemy createEnemy();
 }
 
+// ConcreteCreator - overrides the factory method to return an instance of a ConcreteProduct
 class EasyGameStage extends GameStage {
     public EasyGameStage(String mode) {
         super(mode);
@@ -130,6 +133,7 @@ class EasyGameStage extends GameStage {
     }
 }
 
+// ConcreteCreator
 class HardGameStage extends GameStage {
     public HardGameStage(String mode) {
         super(mode);

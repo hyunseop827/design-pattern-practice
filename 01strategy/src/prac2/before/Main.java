@@ -1,7 +1,7 @@
 package prac2.before;
 
 class GameCharacter {
-    private String name;
+    private final String name;
     private String weaponType;
 
     public GameCharacter(String name, String weaponType) {
@@ -16,7 +16,7 @@ class GameCharacter {
     public void attack() {
         System.out.print(name + ": ");
 
-        // 문제가 되는 부분 ! -> OCP 불만족
+        // Problematic part - violates OCP!
         if (weaponType.equals("SWORD")) {
             System.out.println("Swinging a sword directly!");
         } else if (weaponType.equals("BOW")) {

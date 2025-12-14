@@ -5,7 +5,7 @@ interface Notification {
     void send(String message);
 }
 
-// Concrete Component - 기본 동작
+// ConcreteComponent - defines an object to which additional responsibilities can be attached
 class EmailNotification implements Notification {
     @Override
     public void send(String message) {

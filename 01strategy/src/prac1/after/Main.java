@@ -21,13 +21,12 @@ class Product {
     }
 }
 
-// Strategy
+// Strategy - defines the interface for discount calculation algorithms
 interface MembershipType {
-    // 오타 수정: caclulate -> calculate
     double calculate(double total);
 }
 
-// Concrete Strategy
+// ConcreteStrategy - 5% discount for students
 class Student implements MembershipType {
     @Override
     public double calculate(double total) {
@@ -35,6 +34,7 @@ class Student implements MembershipType {
     }
 }
 
+// ConcreteStrategy - no discount for regular members
 class Regular implements MembershipType {
     @Override
     public double calculate(double total) {
@@ -42,6 +42,7 @@ class Regular implements MembershipType {
     }
 }
 
+// ConcreteStrategy - 10% discount for premium members
 class Premium implements MembershipType {
     @Override
     public double calculate(double total) {
@@ -49,11 +50,10 @@ class Premium implements MembershipType {
     }
 }
 
+// ConcreteStrategy - 15~20% discount for VIP (20% if total >= 100000)
 class Vip implements MembershipType {
     @Override
     public double calculate(double total) {
-        // [수정 포인트] 원본 코드의 VIP 로직 복구
-        // 전략 패턴 내부에서도 비즈니스 로직(조건문)이 들어갈 수 있습니다.
         if (total >= 100000) {
             return total * 0.8;
         } else {
@@ -69,13 +69,12 @@ class ShoppingCart {
         products.add(product);
     }
 
-    // Context: 전략을 주입받아 실행
+    // Context method - delegates discount calculation to the injected strategy
     public double checkout(MembershipType membershipType) {
         double total = 0;
         for (Product product : products) {
             total += product.getPrice();
         }
-        // 위임(Delegation)
         return membershipType.calculate(total);
     }
 }
@@ -86,7 +85,7 @@ public class Main {
         cart.addProduct(new Product("Keyboard", 150000));
         cart.addProduct(new Product("Mouse", 50000));
 
-        // [수정 포인트] 문자열 대신 구체적인 전략 객체(Concrete Strategy)를 생성해서 넘겨야 합니다.
+        // Client passes ConcreteStrategy objects to the Context
         System.out.println("Regular Cost: " + cart.checkout(new Regular()));
         System.out.println("Student Cost: " + cart.checkout(new Student()));
         System.out.println("Premium Cost: " + cart.checkout(new Premium()));

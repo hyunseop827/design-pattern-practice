@@ -6,117 +6,71 @@ enum Theme {
     FOREST, VOLCANO
 }
 
-// Abstract Product
+// AbstractProduct - declares an interface for a type of product object
 interface Enemy {
     String name();
-
     int attack();
-
     int hp();
-
     void takeDamage(int dmg);
-
     boolean isDead();
 }
 
+// AbstractProduct
 interface Item {
     String name();
-
     void useOn(Enemy enemy);
 }
 
-// Concrete Product
+// ConcreteProduct
 class Slime implements Enemy {
     private final Random r = new Random();
     private int hp = 20;
 
-    public String name() {
-        return "Slime";
-    }
-
-    public int attack() {
-        return 3 + r.nextInt(3);
-    }
-
-    public int hp() {
-        return hp;
-    }
-
-    public void takeDamage(int dmg) {
-        hp = Math.max(0, hp - dmg);
-    }
-
-    public boolean isDead() {
-        return hp <= 0;
-    }
+    public String name() { return "Slime"; }
+    public int attack() { return 3 + r.nextInt(3); }
+    public int hp() { return hp; }
+    public void takeDamage(int dmg) { hp = Math.max(0, hp - dmg); }
+    public boolean isDead() { return hp <= 0; }
 }
 
+// ConcreteProduct
 class Goblin implements Enemy {
     private final Random r = new Random();
     private int hp = 35;
 
-    public String name() {
-        return "Goblin";
-    }
-
-    public int attack() {
-        return 5 + r.nextInt(5);
-    }
-
-    public int hp() {
-        return hp;
-    }
-
-    public void takeDamage(int dmg) {
-        hp = Math.max(0, hp - dmg);
-    }
-
-    public boolean isDead() {
-        return hp <= 0;
-    }
+    public String name() { return "Goblin"; }
+    public int attack() { return 5 + r.nextInt(5); }
+    public int hp() { return hp; }
+    public void takeDamage(int dmg) { hp = Math.max(0, hp - dmg); }
+    public boolean isDead() { return hp <= 0; }
 }
 
+// ConcreteProduct
 class FireElemental implements Enemy {
     private final Random r = new Random();
     private int hp = 50;
 
-    public String name() {
-        return "Fire Elemental";
-    }
-
-    public int attack() {
-        return 7 + r.nextInt(7);
-    }
-
-    public int hp() {
-        return hp;
-    }
-
-    public void takeDamage(int dmg) {
-        hp = Math.max(0, hp - dmg);
-    }
-
-    public boolean isDead() {
-        return hp <= 0;
-    }
+    public String name() { return "Fire Elemental"; }
+    public int attack() { return 7 + r.nextInt(7); }
+    public int hp() { return hp; }
+    public void takeDamage(int dmg) { hp = Math.max(0, hp - dmg); }
+    public boolean isDead() { return hp <= 0; }
 }
 
+// ConcreteProduct
 class HealingPotion implements Item {
-    public String name() {
-        return "Healing Potion";
-    }
+    public String name() { return "Healing Potion"; }
 
     public void useOn(Enemy enemy) {
         System.out.println("Potion has no effect on " + enemy.name());
     }
 }
 
+// ConcreteProduct
 class FireSword implements Item {
     private final Random r = new Random();
 
-    public String name() {
-        return "Fire Sword";
-    }
+    public String name() { return "Fire Sword"; }
 
     public void useOn(Enemy enemy) {
         int dmg = 10 + r.nextInt(6);
@@ -125,7 +79,7 @@ class FireSword implements Item {
     }
 }
 
-// Abstract Factory
+// AbstractFactory - declares an interface for operations that create abstract product objects
 abstract class GameStage {
     private final Theme theme;
     protected final Random r = new Random();
@@ -135,7 +89,6 @@ abstract class GameStage {
     }
 
     public abstract Enemy createEnemy();
-
     public abstract Item createItem();
 
     public void playOnce() {
@@ -153,7 +106,7 @@ abstract class GameStage {
             System.out.println("Hero hits " + enemy.name() + " for " + heroAtk + " (HP " + enemy.hp() + ")");
             if (enemy.isDead()) break;
 
-            // 가끔 아이템 사용
+            // Occasionally use item
             if (r.nextInt(3) == 0) {
                 item.useOn(enemy);
                 if (enemy.isDead()) break;
@@ -168,7 +121,7 @@ abstract class GameStage {
     }
 }
 
-// Concrete Factory
+// ConcreteFactory - implements the operations to create concrete product objects
 class ForestGameStage extends GameStage {
     public ForestGameStage(Theme theme) {
         super(theme);
@@ -186,6 +139,7 @@ class ForestGameStage extends GameStage {
     }
 }
 
+// ConcreteFactory
 class VolcanoGameStage extends GameStage {
     public VolcanoGameStage(Theme theme) {
         super(theme);
@@ -202,18 +156,17 @@ class VolcanoGameStage extends GameStage {
     }
 }
 
-// 실행용 main
-
+// Main entry point
 public class Main {
     public static void main(String[] args) {
         Theme theme = (args.length > 0 && "volcano".equalsIgnoreCase(args[0]))
                 ? Theme.VOLCANO
                 : Theme.FOREST;
-        GameStage gameStage = null;
-        if(theme.equals(Theme.FOREST)) {
+
+        GameStage gameStage;
+        if (theme.equals(Theme.FOREST)) {
             gameStage = new ForestGameStage(theme);
-        }
-        else{
+        } else {
             gameStage = new VolcanoGameStage(theme);
         }
 

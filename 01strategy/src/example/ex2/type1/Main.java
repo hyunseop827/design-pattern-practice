@@ -67,7 +67,7 @@ class GradeRecord {
 
     private static void validate0to100(double v, String name) {
         if (v < 0 || v > 100) {
-            throw new IllegalArgumentException(name + "은 0에서 100 사이여야 한다");
+            throw new IllegalArgumentException(name + " must be between 0 and 100");
         }
     }
 
@@ -94,9 +94,9 @@ class GradeRecord {
     }
 
     private void setScores(double mid, double fin, double assignment) {
-        validate0to100(mid, "중간시험성적");
-        validate0to100(fin, "기말시험성적");
-        validate0to100(assignment, "과제성적");
+        validate0to100(mid, "Midterm score");
+        validate0to100(fin, "Final score");
+        validate0to100(assignment, "Assignment score");
         this.mid = mid;
         this.fin = fin;
         this.assignment = assignment;
@@ -117,20 +117,20 @@ public class Main {
         GradeRecord.create("S001", "CS102", 65, 60, 70).save();
         GradeRecord.create("S002", "CS101", 40, 55, 45).save();
 
-        System.out.println("단건 로드");
+        System.out.println("Single record load");
         GradeRecord.load("S001", "CS101").ifPresent(System.out::println);
 
-        System.out.println("\nS001 학생 전체");
+        System.out.println("\nAll records for S001");
         for (GradeRecord r : GradeRecord.loadByStudent("S001")) {
             System.out.println(r);
         }
 
-        System.out.println("\n전체 목록");
+        System.out.println("\nAll records");
         for (GradeRecord r : GradeRecord.loadAll()) {
             System.out.println(r);
         }
 
-        System.out.println("\n점수 수정 후 재평가");
+        System.out.println("\nRe-evaluation after score update");
         GradeRecord.load("S002", "CS101").ifPresent(r -> {
             r.updateScores(55, 58, 70);
             System.out.println(r);
