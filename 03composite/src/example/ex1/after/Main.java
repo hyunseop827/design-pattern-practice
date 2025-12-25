@@ -1,4 +1,4 @@
-package example.ex1.after_refined;
+package example.ex1.after;
 
 import java.util.ArrayList;
 import java.util.List;
