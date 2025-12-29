@@ -70,12 +70,12 @@ class User {
 public class Main {
     public static void main(String[] args) {
         User user1 = new User(
-                "김철수",
+                "Chulsoo",
                 "Kim",
                 "chulsoo@email.com",
                 "010-1234-5678",
-                "서울시 강남구",
-                "서울",
+                "Gangnam-gu, Seoul",
+                "Seoul",
                 "12345",
                 "Korea",
                 true,
@@ -86,12 +86,12 @@ public class Main {
         System.out.println(user1);
 
         User user2 = new User(
-                "이영희",
+                "Younghee",
                 "Lee",
                 "younghee@email.com",
                 "010-9876-5432",
-                "부산시 해운대구",
-                "부산",
+                "Haeundae-gu, Busan",
+                "Busan",
                 "54321",
                 "Korea",
                 true,
@@ -101,11 +101,11 @@ public class Main {
         );
         System.out.println(user2);
 
-        User user3 = new User("박민수", "Park", "minsu@email.com");
+        User user3 = new User("Minsu", "Park", "minsu@email.com");
         System.out.println(user3);
 
         User user4 = new User(
-                "최지은",
+                "Jieun",
                 "Choi",
                 "jieun@email.com",
                 null,
